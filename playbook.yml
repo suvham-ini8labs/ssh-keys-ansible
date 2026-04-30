@@ -1,0 +1,55 @@
+- name: copy ssh keys to all the nodes
+  hosts: all 
+  gather_facts: false
+
+  pre_tasks:
+    - name: "[TEST] Check VM is reachable"
+      ping:
+      register: ping_result
+
+    - name: "[TEST] Fail if VM is unreachable"
+      fail:
+        msg: "{{ inventory_hostname }} is not reachable"
+      when: ping_result.ping != "pong"
+
+  tasks:
+    - name: Ensure .ssh directory exists
+      file:
+        path: /home/{{ target_user }}/.ssh
+        state: directory
+        owner: "{{ target_user }}" 
+        mode: '0700'
+
+    - name: Manage SSH keys
+      authorized_key:
+        user: "{{ target_user }}" 
+        key: "{{ item.key }}"
+        state: "{{ item.state }}"
+        manage_dir: yes
+      loop: "{{ ssh_public_keys }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Verify authorized_keys permissions
+      file:
+        path: /home/{{ target_user }}/.ssh/authorized_keys
+        owner: "{{ target_user }}" 
+        mode: '0600'
+
+    - name: Confirm key was added
+      debug:
+        msg: "SSH key successfully added to {{ inventory_hostname }}"
+
+  post_tasks:
+    - name: "[TEST] authorized_keys file exists on remote"
+      stat:
+        path: ~/.ssh/authorized_keys
+      register: auth_keys
+
+    - name: "[TEST] Assert file is present and has correct permissions"
+      assert:
+        that:
+          - auth_keys.stat.exists
+          - auth_keys.stat.mode == '0600'
+        fail_msg: "authorized_keys missing or wrong permissions on {{ inventory_hostname }}"
+        success_msg: "authorized_keys OK on {{ inventory_hostname }}"

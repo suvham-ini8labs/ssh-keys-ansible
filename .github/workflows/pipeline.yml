@@ -1,0 +1,30 @@
+name: Manage SSH Keys on Nodes
+
+on:
+  push:
+    paths:
+      - 'group_vars/all/ssh_keys.yml'
+    branches:
+      - main
+  workflow_dispatch:  # manual trigger option
+
+jobs:
+  ansible:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Install Ansible
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ansible
+
+      - name: Ansible dry run
+        run: |
+          ansible-playbook -i inventory/hosts.yaml playbook.yml --check --diff
+
+      - name: Run Ansible playbook
+        run: |
+          ansible-playbook -i inventory/hosts.yaml playbook.yml -v

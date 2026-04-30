@@ -1,0 +1,14 @@
+target_user: azureuser
+
+ssh_public_keys:
+  - name: "user-1"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJj88tLsp45Fhs/NIRfJ/DtLAUC+Ac6MPIzAbEUJUUqt azureuser@suvham-jumpserver"
+    state: present
+
+  - name: "user-2"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINHbdt1bICfUDjXAUIPK/4Pp52tURjyHqMal0u3XX4tk azureuser@suvham-jumpserver"
+    state: present
+
+  - name: "user-3"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBSoYk9ncNKV1prDHLf1l9NPkYc5nIiGRcVFucm4nxum azureuser@suvham-jumpserver"
+    state: present 
