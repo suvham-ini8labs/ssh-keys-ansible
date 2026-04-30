@@ -1,9 +1,9 @@
 # Server Key Management
 
 ## Prerequisites
-- Jump-server registered as GitHub self-hosted runner
-- Jump-server has SSH access to all nodes
-- Ansible installed on jump-server
+- Controller-node registered as GitHub self-hosted runner
+- Controller-node has SSH access to all nodes
+- Ansible installed on the controller-node
 
 ## Adding a Key
 Add to `group_vars/all/ssh_keys.yml`:
@@ -16,8 +16,7 @@ ssh_public_keys:
 
 ## Removing a Key
 
-Running the pipeline once with `state:absent` will remove the key from the nodes, next we can remove `ssh-keys.yml` file.
-Change `state` to `absent`:
+Running the pipeline once with `state:absent` will remove the key from the nodes, next we can remove `ssh-keys.yml` file on the next commit.
 ```yaml
   - name: "dev-john"
     key: "ssh-rsa AAAA..."
@@ -35,4 +34,4 @@ ansible-playbook -i inventory/hosts.yaml playbook.yml -v
 
 ## Pipeline
 - Auto triggers on push to `main` when `ssh_keys.yml` changes
-- Runs on self-hosted jump-server runner
+- Runs on self-hosted runner
