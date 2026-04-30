@@ -18,5 +18,5 @@ ssh_public_keys:
     state: present 
 
   - name: "user-5"
-    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEWSdrtQsaSo+L1oeQO04n3MZdH4VE2bsyQ7+exVYl7X azureuser@suvham-jumpserver"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOjD6dD2vyd6Ec/ztL+poo04dvXqCBuuttbtplauu7u3 azureuser@suvham-jumpserver"
     state: present   
