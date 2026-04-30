@@ -3,7 +3,7 @@ name: Manage SSH Keys on Nodes
 on:
   push:
     paths:
-      - 'group_vars/all/ssh_keys.yml'
+      - 'group_vars/all/ssh-keys.yml'
     branches:
       - main
   workflow_dispatch:  # manual trigger option
